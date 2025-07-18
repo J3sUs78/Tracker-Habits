@@ -26,3 +26,18 @@ class RegisterForm(forms.ModelForm):
         if password1 and password2 and password1 != password2:
             raise ValidationError('Las contraseñas no coinciden.')
         return cleaned_data 
+
+class LoginForm(forms.Form):
+    username = forms.CharField(label='Usuario')
+    password = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        username = cleaned_data.get('username')
+        password = cleaned_data.get('password')
+        if username and password:
+            from django.contrib.auth import authenticate
+            user = authenticate(username=username, password=password)
+            if user is None:
+                raise ValidationError('Usuario o contraseña incorrectos.')
+        return cleaned_data 

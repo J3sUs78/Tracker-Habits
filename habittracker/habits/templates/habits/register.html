@@ -1,30 +1,30 @@
 {% extends 'habits/base.html' %}
 {% block title %}Registro{% endblock %}
 {% block content %}
-<h2>Registro de usuario</h2>
-<form method="post" class="form">
-    {% csrf_token %}
-    {{ form.non_field_errors }}
-    <div class="form-group">
-        {{ form.username.label_tag }}<br>
-        {{ form.username }}
-        {{ form.username.errors }}
+<div class="container">
+    <h2>Registro de usuario</h2>
+    <form method="post" class="form">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-group">
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.errors %}
+                    <ul class="errorlist">{% for error in field.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn">Registrarse</button>
+    </form>
+    <div class="actions">
+        <p>¿Ya tienes cuenta? <a href="{% url 'login' %}" class="btn">Iniciar sesión</a></p>
     </div>
-    <div class="form-group">
-        {{ form.email.label_tag }}<br>
-        {{ form.email }}
-        {{ form.email.errors }}
-    </div>
-    <div class="form-group">
-        {{ form.password1.label_tag }}<br>
-        {{ form.password1 }}
-        {{ form.password1.errors }}
-    </div>
-    <div class="form-group">
-        {{ form.password2.label_tag }}<br>
-        {{ form.password2 }}
-        {{ form.password2.errors }}
-    </div>
-    <button type="submit" class="btn">Registrarse</button>
-</form>
+    {% if messages %}
+        <ul>
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+</div>
 {% endblock %} 
