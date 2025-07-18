@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Habit Tracker{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'habits/css/style.css' %}">
+</head>
+<body>
+    <nav>
+        <!-- Aquí tu navbar -->
+    </nav>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    <footer>
+        <!-- Aquí tu footer -->
+    </footer>
+</body>
+</html>
