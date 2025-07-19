@@ -57,11 +57,30 @@ class HabitForm(forms.ModelForm):
         fields = ['nombre', 'descripcion', 'periodicidad', 'meta', 'categoria', 'activo']
         labels = {
             'nombre': 'Nombre del hábito',
-            'descripcion': 'Descripción',
-            'periodicidad': 'Periodicidad',
-            'meta': 'Meta',
+            'descripcion': 'Descripción (opcional)',
+            'periodicidad': '¿Con qué frecuencia?',
+            'meta': 'Meta (veces por periodo)',
             'categoria': 'Categoría',
             'activo': '¿Activo?'
+        }
+        widgets = {
+            'nombre': forms.TextInput(attrs={
+                'placeholder': 'Ej: Hacer ejercicio, Leer 30 minutos, Meditar...',
+                'class': 'form-control'
+            }),
+            'descripcion': forms.Textarea(attrs={
+                'placeholder': 'Describe tu hábito (opcional)',
+                'rows': 3,
+                'class': 'form-control'
+            }),
+            'periodicidad': forms.Select(attrs={'class': 'form-control'}),
+            'meta': forms.NumberInput(attrs={
+                'min': 1,
+                'max': 100,
+                'class': 'form-control'
+            }),
+            'categoria': forms.Select(attrs={'class': 'form-control'}),
+            'activo': forms.CheckboxInput(attrs={'class': 'form-check-input'})
         }
 
 class LoginForm(forms.Form):

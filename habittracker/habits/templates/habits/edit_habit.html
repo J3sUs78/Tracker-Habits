@@ -1,5 +1,5 @@
 {% extends 'habits/base.html' %}
-{% block title %}Crear Hábito{% endblock %}
+{% block title %}Editar Hábito{% endblock %}
 {% block content %}
 <div class="dashboard-container">
     <!-- Sidebar -->
@@ -10,7 +10,7 @@
         </div>
         <ul class="sidebar-menu">
             <li><a href="{% url 'dashboard' %}"><i class="icon">📊</i> Dashboard</a></li>
-            <li><a href="{% url 'create_habit' %}" class="active"><i class="icon">➕</i> Crear Hábito</a></li>
+            <li><a href="{% url 'create_habit' %}"><i class="icon">➕</i> Crear Hábito</a></li>
             <li><a href="{% url 'edit_profile' %}"><i class="icon">👤</i> Mi Perfil</a></li>
             <li><a href="{% url 'logout' %}"><i class="icon">🚪</i> Cerrar Sesión</a></li>
         </ul>
@@ -19,7 +19,7 @@
     <!-- Main Content -->
     <main class="main-content">
         <div class="content-header">
-            <h1>Crear Nuevo Hábito</h1>
+            <h1>Editar Hábito</h1>
             <a href="{% url 'dashboard' %}" class="btn btn-secondary">← Volver</a>
         </div>
 
@@ -45,7 +45,7 @@
                     </div>
                 {% endif %}
                 <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">Crear Hábito</button>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                     <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancelar</a>
                 </div>
             </form>
