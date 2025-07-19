@@ -62,4 +62,17 @@ body {
     margin: 4px 0 0 0;
     list-style: none;
     padding: 0;
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 4px;
+    padding: 8px 12px;
+    margin-top: 8px;
+}
+
+.form-group .errorlist li {
+    margin-bottom: 4px;
+}
+
+.form-group .errorlist li:last-child {
+    margin-bottom: 0;
 }
