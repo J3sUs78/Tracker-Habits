@@ -1,113 +1,45 @@
-{% extends 'habits/base.html' %}
+{% extends 'habits/layouts/dashboard_layout.html' %}
 {% block title %}Dashboard | Habit Tracker{% endblock %}
 
-{% block content %}
-<div class="dashboard-container">
-    <!-- Sidebar -->
-    <nav class="sidebar">
-        <div class="sidebar-header">
-            <h3>Habit Tracker</h3>
-            <p>¡Hola, {{ user.username }}!</p>
-        </div>
-        <ul class="sidebar-menu">
-            <li><a href="{% url 'dashboard' %}" class="active"><i class="icon">📊</i> Dashboard</a></li>
-            <li><a href="{% url 'create_habit' %}"><i class="icon">➕</i> Crear Hábito</a></li>
-            <li><a href="{% url 'edit_profile' %}"><i class="icon">👤</i> Mi Perfil</a></li>
-            <li><a href="{% url 'logout' %}"><i class="icon">🚪</i> Cerrar Sesión</a></li>
-        </ul>
-    </nav>
+{% block dashboard_content %}
+    <div class="dashboard-layout">
+        <div class="dashboard-main">
+            <!-- Stats Cards Component -->
+            {% include 'habits/components/stats_cards.html' %}
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <div class="content-header">
-            <h1>Mi Dashboard</h1>
-            <a href="{% url 'create_habit' %}" class="btn btn-primary">➕ Nuevo Hábito</a>
-        </div>
-
-        {% if messages %}
-            <div class="messages">
-                {% for message in messages %}
-                    <div class="message message-{{ message.tags }}">
-                        {{ message }}
+            <div class="habits-grid">
+                {% if habits %}
+                    {% for habit in habits %}
+                        {% include 'habits/components/habit_card.html' %}
+                    {% endfor %}
+                {% else %}
+                    <!-- Empty State -->
+                    <div class="empty-state">
+                        <div class="empty-icon">📝</div>
+                        <h3>No tienes hábitos aún</h3>
+                        <p>Crea tu primer hábito para comenzar a mejorar tu vida.</p>
+                        <a href="{% url 'create_habit' %}" class="btn btn-primary">Crear mi primer hábito</a>
                     </div>
-                {% endfor %}
+                {% endif %}
             </div>
-        {% endif %}
-
-        <!-- Estadísticas -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon">📊</div>
-                <div class="stat-content">
-                    <h3>{{ total_habits }}</h3>
-                    <p>Total de hábitos</p>
+        </div>
+        
+        <div class="dashboard-sidebar">
+            <div class="quick-stats">
+                <h3>Resumen Rápido</h3>
+                <div class="quick-stat">
+                    <span class="quick-stat-label">Hábitos esta semana</span>
+                    <span class="quick-stat-value">{{ active_habits }}</span>
                 </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">🟢</div>
-                <div class="stat-content">
-                    <h3>{{ active_habits }}</h3>
-                    <p>Hábitos activos</p>
+                <div class="quick-stat">
+                    <span class="quick-stat-label">Completados hoy</span>
+                    <span class="quick-stat-value">0</span>
                 </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">🔴</div>
-                <div class="stat-content">
-                    <h3>{{ inactive_habits }}</h3>
-                    <p>Hábitos inactivos</p>
+                <div class="quick-stat">
+                    <span class="quick-stat-label">Meta semanal</span>
+                    <span class="quick-stat-value">0%</span>
                 </div>
             </div>
         </div>
-
-        <div class="habits-grid">
-            {% if habits %}
-                {% for habit in habits %}
-                    <div class="habit-card {% if not habit.activo %}inactive{% endif %}">
-                        <div class="habit-header">
-                            <h3>{{ habit.nombre }}</h3>
-                            <div class="habit-actions">
-                                <button class="btn-toggle" data-habit-id="{{ habit.id }}" data-active="{{ habit.activo|yesno:'true,false' }}">
-                                    {% if habit.activo %}🟢{% else %}🔴{% endif %}
-                                </button>
-                                <a href="{% url 'edit_habit' habit.id %}" class="btn-edit">✏️</a>
-                                <a href="{% url 'delete_habit' habit.id %}" class="btn-delete">🗑️</a>
-                            </div>
-                        </div>
-                        <div class="habit-details">
-                            {% if habit.descripcion %}
-                                <p class="habit-description">{{ habit.descripcion }}</p>
-                            {% endif %}
-                            <div class="habit-meta">
-                                <span class="meta-item">
-                                    <strong>Periodicidad:</strong> {{ habit.get_periodicidad_display }}
-                                </span>
-                                <span class="meta-item">
-                                    <strong>Meta:</strong> {{ habit.meta }} veces
-                                </span>
-                                {% if habit.categoria %}
-                                    <span class="meta-item">
-                                        <strong>Categoría:</strong> 
-                                        <span class="category-badge">{{ habit.categoria.name }}</span>
-                                    </span>
-                                {% endif %}
-                            </div>
-                            <div class="habit-status">
-                                <span class="status-badge {% if habit.activo %}active{% else %}inactive{% endif %}">
-                                    {% if habit.activo %}Activo{% else %}Inactivo{% endif %}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            {% else %}
-                <div class="empty-state">
-                    <div class="empty-icon">📝</div>
-                    <h3>No tienes hábitos aún</h3>
-                    <p>Crea tu primer hábito para comenzar a mejorar tu vida.</p>
-                    <a href="{% url 'create_habit' %}" class="btn btn-primary">Crear mi primer hábito</a>
-                </div>
-            {% endif %}
-        </div>
-    </main>
-</div>
+    </div>
 {% endblock %} 

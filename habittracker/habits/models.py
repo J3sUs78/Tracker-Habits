@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from .constants import PERIODICIDAD_CHOICES
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
@@ -19,11 +20,6 @@ class Category(models.Model):
         return self.name
 
 class Habit(models.Model):
-    PERIODICIDAD_CHOICES = [
-        ('diario', 'Diario'),
-        ('semanal', 'Semanal'),
-        ('mensual', 'Mensual'),
-    ]
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='habits')
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField(blank=True, null=True)

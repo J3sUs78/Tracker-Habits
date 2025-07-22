@@ -1,42 +1,19 @@
-{% extends 'habits/base.html' %}
+{% extends 'habits/layouts/dashboard_layout.html' %}
 {% block title %}Eliminar Hábito{% endblock %}
-{% block content %}
-<div class="dashboard-container">
-    <!-- Sidebar -->
-    <nav class="sidebar">
-        <div class="sidebar-header">
-            <h3>Habit Tracker</h3>
-            <p>¡Hola, {{ user.username }}!</p>
-        </div>
-        <ul class="sidebar-menu">
-            <li><a href="{% url 'dashboard' %}"><i class="icon">📊</i> Dashboard</a></li>
-            <li><a href="{% url 'create_habit' %}"><i class="icon">➕</i> Crear Hábito</a></li>
-            <li><a href="{% url 'edit_profile' %}"><i class="icon">👤</i> Mi Perfil</a></li>
-            <li><a href="{% url 'logout' %}"><i class="icon">🚪</i> Cerrar Sesión</a></li>
-        </ul>
-    </nav>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <div class="content-header">
-            <h1>Eliminar Hábito</h1>
-            <a href="{% url 'dashboard' %}" class="btn btn-secondary">← Volver</a>
-        </div>
-
-        <div class="delete-confirmation">
-            <div class="warning-icon">⚠️</div>
-            <h2>¿Estás seguro?</h2>
-            <p>Estás a punto de eliminar el hábito <strong>"{{ habit.nombre }}"</strong>.</p>
-            <p>Esta acción no se puede deshacer.</p>
-            
-            <form method="post" class="delete-form">
-                {% csrf_token %}
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-danger">Sí, eliminar</button>
-                    <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancelar</a>
-                </div>
-            </form>
-        </div>
-    </main>
-</div>
+{% block dashboard_content %}
+    <div class="delete-confirmation">
+        <div class="warning-icon">⚠️</div>
+        <h2>¿Estás seguro?</h2>
+        <p>Estás a punto de eliminar el hábito <strong>"{{ habit.nombre }}"</strong>.</p>
+        <p>Esta acción no se puede deshacer.</p>
+        
+        <form method="post" class="delete-form">
+            {% csrf_token %}
+            <div class="form-actions">
+                <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+                <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
 {% endblock %} 

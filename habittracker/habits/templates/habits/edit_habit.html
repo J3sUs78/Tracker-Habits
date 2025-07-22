@@ -1,55 +1,15 @@
-{% extends 'habits/base.html' %}
+{% extends 'habits/layouts/dashboard_layout.html' %}
 {% block title %}Editar Hábito{% endblock %}
-{% block content %}
-<div class="dashboard-container">
-    <!-- Sidebar -->
-    <nav class="sidebar">
-        <div class="sidebar-header">
-            <h3>Habit Tracker</h3>
-            <p>¡Hola, {{ user.username }}!</p>
-        </div>
-        <ul class="sidebar-menu">
-            <li><a href="{% url 'dashboard' %}"><i class="icon">📊</i> Dashboard</a></li>
-            <li><a href="{% url 'create_habit' %}"><i class="icon">➕</i> Crear Hábito</a></li>
-            <li><a href="{% url 'edit_profile' %}"><i class="icon">👤</i> Mi Perfil</a></li>
-            <li><a href="{% url 'logout' %}"><i class="icon">🚪</i> Cerrar Sesión</a></li>
-        </ul>
-    </nav>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <div class="content-header">
-            <h1>Editar Hábito</h1>
-            <a href="{% url 'dashboard' %}" class="btn btn-secondary">← Volver</a>
-        </div>
-
-        <div class="form-container">
-            <form method="post" class="form">
-                {% csrf_token %}
-                {% for field in form %}
-                    <div class="form-group">
-                        {{ field.label_tag }}
-                        {{ field }}
-                        {% if field.errors %}
-                            <ul class="errorlist">{% for error in field.errors %}<li>{{ error }}</li>{% endfor %}</ul>
-                        {% endif %}
-                    </div>
-                {% endfor %}
-                {% if form.non_field_errors %}
-                    <div class="form-group">
-                        <ul class="errorlist">
-                            {% for error in form.non_field_errors %}
-                                <li>{{ error }}</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                {% endif %}
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-                    <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancelar</a>
-                </div>
-            </form>
-        </div>
-    </main>
-</div>
+{% block dashboard_content %}
+    <div class="form-container">
+        <form method="post" class="form">
+            {% csrf_token %}
+            {% include 'habits/components/form_fields.html' %}
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
 {% endblock %} 

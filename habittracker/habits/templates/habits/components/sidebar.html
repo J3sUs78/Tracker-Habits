@@ -1,0 +1,21 @@
+<!-- Sidebar Component -->
+<nav class="sidebar">
+    <div class="sidebar-header">
+        <h3>Habit Tracker</h3>
+        <p>¡Hola, {{ user.username }}!</p>
+    </div>
+    <ul class="sidebar-menu">
+        <li><a href="{% url 'dashboard' %}" class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+            <i class="icon">📊</i> Dashboard
+        </a></li>
+        <li><a href="{% url 'create_habit' %}" class="{% if request.resolver_match.url_name == 'create_habit' %}active{% endif %}">
+            <i class="icon">➕</i> Crear Hábito
+        </a></li>
+        <li><a href="{% url 'edit_profile' %}" class="{% if request.resolver_match.url_name == 'edit_profile' %}active{% endif %}">
+            <i class="icon">⚙️</i> Configuración
+        </a></li>
+        <li><a href="{% url 'logout' %}">
+            <i class="icon">🚪</i> Cerrar Sesión
+        </a></li>
+    </ul>
+</nav> 

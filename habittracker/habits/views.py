@@ -8,6 +8,8 @@ from .models import UserProfile, Habit, HabitRecord
 from django.http import JsonResponse
 from django.db.models import Count, Q
 from datetime import datetime, timedelta
+from .utils import get_dashboard_context
+from .constants import SUCCESS_MESSAGES, ERROR_MESSAGES
 
 # Create your views here.
 
@@ -27,7 +29,7 @@ def login_view(request):
                 login(request, user)
                 return redirect('dashboard')
             else:
-                messages.error(request, 'Usuario o contraseña incorrectos.')
+                messages.error(request, ERROR_MESSAGES['login_failed'])
     else:
         form = LoginForm()
     return render(request, 'habits/login.html', {'form': form})
@@ -41,7 +43,7 @@ def register_view(request):
                 email=form.cleaned_data['email'],
                 password=form.cleaned_data['password1']
             )
-            messages.success(request, 'Usuario registrado correctamente. Ahora puedes iniciar sesión.')
+            messages.success(request, SUCCESS_MESSAGES['user_registered'])
             return redirect('login')
     else:
         form = RegisterForm()
@@ -50,37 +52,12 @@ def register_view(request):
 @login_required
 def logout_view(request):
     logout(request)
-    messages.success(request, 'Has cerrado sesión correctamente.')
+    messages.success(request, SUCCESS_MESSAGES['logout_success'])
     return redirect('index')
 
 @login_required
 def dashboard(request):
-    habits = Habit.objects.filter(user=request.user).order_by('-fecha_creacion')
-    
-    # Estadísticas
-    total_habits = habits.count()
-    active_habits = habits.filter(activo=True).count()
-    inactive_habits = habits.filter(activo=False).count()
-    
-    # Hábitos por categoría
-    habits_by_category = habits.values('categoria__name').annotate(
-        count=Count('id')
-    ).order_by('-count')
-    
-    # Hábitos por periodicidad
-    habits_by_periodicity = habits.values('periodicidad').annotate(
-        count=Count('id')
-    ).order_by('-count')
-    
-    context = {
-        'habits': habits,
-        'total_habits': total_habits,
-        'active_habits': active_habits,
-        'inactive_habits': inactive_habits,
-        'habits_by_category': habits_by_category,
-        'habits_by_periodicity': habits_by_periodicity,
-    }
-    
+    context = get_dashboard_context(request.user)
     return render(request, 'habits/dashboard.html', context)
 
 @login_required
@@ -90,11 +67,18 @@ def edit_profile(request):
         form = UserProfileForm(request.POST, instance=profile)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Perfil actualizado correctamente.')
+            messages.success(request, SUCCESS_MESSAGES['profile_updated'])
             return redirect('edit_profile')
     else:
         form = UserProfileForm(instance=profile)
-    return render(request, 'habits/edit_profile.html', {'form': form})
+    
+    context = {
+        'form': form,
+        'page_title': 'Editar Perfil',
+        'action_button_url': 'dashboard',
+        'action_button_text': '← Volver',
+    }
+    return render(request, 'habits/edit_profile.html', context)
 
 @login_required
 def create_habit(request):
@@ -104,11 +88,18 @@ def create_habit(request):
             habit = form.save(commit=False)
             habit.user = request.user
             habit.save()
-            messages.success(request, 'Hábito creado correctamente.')
+            messages.success(request, SUCCESS_MESSAGES['habit_created'])
             return redirect('dashboard')
     else:
         form = HabitForm()
-    return render(request, 'habits/create_habit.html', {'form': form})
+    
+    context = {
+        'form': form,
+        'page_title': 'Crear Nuevo Hábito',
+        'action_button_url': 'dashboard',
+        'action_button_text': '← Volver',
+    }
+    return render(request, 'habits/create_habit.html', context)
 
 @login_required
 def edit_habit(request, habit_id):
@@ -117,20 +108,35 @@ def edit_habit(request, habit_id):
         form = HabitForm(request.POST, instance=habit)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Hábito actualizado correctamente.')
+            messages.success(request, SUCCESS_MESSAGES['habit_updated'])
             return redirect('dashboard')
     else:
         form = HabitForm(instance=habit)
-    return render(request, 'habits/edit_habit.html', {'form': form, 'habit': habit})
+    
+    context = {
+        'form': form,
+        'habit': habit,
+        'page_title': 'Editar Hábito',
+        'action_button_url': 'dashboard',
+        'action_button_text': '← Volver',
+    }
+    return render(request, 'habits/edit_habit.html', context)
 
 @login_required
 def delete_habit(request, habit_id):
     habit = get_object_or_404(Habit, id=habit_id, user=request.user)
     if request.method == 'POST':
         habit.delete()
-        messages.success(request, 'Hábito eliminado correctamente.')
+        messages.success(request, SUCCESS_MESSAGES['habit_deleted'])
         return redirect('dashboard')
-    return render(request, 'habits/delete_habit.html', {'habit': habit})
+    
+    context = {
+        'habit': habit,
+        'page_title': 'Eliminar Hábito',
+        'action_button_url': 'dashboard',
+        'action_button_text': '← Volver',
+    }
+    return render(request, 'habits/delete_habit.html', context)
 
 @login_required
 def toggle_habit_status(request, habit_id):

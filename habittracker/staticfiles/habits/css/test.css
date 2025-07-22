@@ -1,0 +1,9 @@
+/* Archivo de prueba para verificar que Django sirve archivos estáticos */
+body {
+    background-color: #f0f0f0 !important;
+}
+
+.test-style {
+    color: red !important;
+    font-size: 20px !important;
+} 

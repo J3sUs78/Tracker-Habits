@@ -1,0 +1,40 @@
+<!-- Habit Card Component -->
+<div class="habit-card {% if not habit.activo %}inactive{% endif %}">
+    <div class="habit-header">
+        <h3>{{ habit.nombre }}</h3>
+        <div class="habit-actions">
+            <button class="btn-toggle" data-habit-id="{{ habit.id }}" data-active="{{ habit.activo|yesno:'true,false' }}">
+                {% if habit.activo %}✅{% else %}⏸️{% endif %}
+            </button>
+            <a href="{% url 'edit_habit' habit.id %}" class="btn-edit">✏️</a>
+            <a href="{% url 'delete_habit' habit.id %}" class="btn-delete">🗑️</a>
+        </div>
+    </div>
+    
+    {% if habit.descripcion %}
+        <p class="habit-description">{{ habit.descripcion }}</p>
+    {% endif %}
+    
+    <div class="habit-meta">
+        <div class="meta-item">
+            <strong>Periodicidad</strong>
+            <span>{{ habit.get_periodicidad_display }}</span>
+        </div>
+        <div class="meta-item">
+            <strong>Meta</strong>
+            <span>{{ habit.meta }} veces</span>
+        </div>
+        {% if habit.categoria %}
+            <div class="meta-item">
+                <strong>Categoría</strong>
+                <span class="category-badge">{{ habit.categoria.name }}</span>
+            </div>
+        {% endif %}
+    </div>
+    
+    <div class="habit-status">
+        <span class="status-badge {% if habit.activo %}active{% else %}inactive{% endif %}">
+            {% if habit.activo %}Activo{% else %}Inactivo{% endif %}
+        </span>
+    </div>
+</div> 

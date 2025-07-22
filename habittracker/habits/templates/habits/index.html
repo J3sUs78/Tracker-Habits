@@ -3,12 +3,12 @@
 {% block title %}Inicio | Habit Tracker{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h1>Bienvenido a tu Habit Tracker</h1>
-    <p>Gestiona tus hábitos, asigna horarios y visualiza tu progreso semanal.</p>
-    <div class="actions">
-        <a href="{% url 'register' %}" class="btn">Registrarse</a>
-        <a href="{% url 'login' %}" class="btn">Iniciar sesión</a>
+<div class="landing-container">
+    <h1 class="landing-title">Bienvenido a tu Habit Tracker</h1>
+    <p class="landing-subtitle">Gestiona tus hábitos, asigna horarios y visualiza tu progreso semanal.</p>
+    <div class="landing-actions">
+        <a href="{% url 'register' %}" class="btn btn-primary btn-lg">Registrarse</a>
+        <a href="{% url 'login' %}" class="btn btn-secondary btn-lg">Iniciar sesión</a>
     </div>
 </div>
 {% endblock %} 

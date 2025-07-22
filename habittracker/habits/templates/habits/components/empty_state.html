@@ -1,0 +1,9 @@
+<!-- Empty State Component -->
+<div class="empty-state">
+    <div class="empty-icon">{{ icon|default:"📝" }}</div>
+    <h3>{{ title|default:"No tienes hábitos aún" }}</h3>
+    <p>{{ description|default:"Crea tu primer hábito para comenzar a mejorar tu vida." }}</p>
+    {% if action_url and action_text %}
+        <a href="{% url action_url %}" class="btn btn-primary">{{ action_text }}</a>
+    {% endif %}
+</div> 
